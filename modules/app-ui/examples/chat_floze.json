@@ -1,0 +1,6 @@
+{"template":"chat","bg":{"image":"F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0300.jpg","focusY":0.4,"blur":0,"dim":0.15},"name":"蓮","avatar":{"image":"F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0300.jpg","focusY":0.3},
+"messages":[{"t":0.6,"from":"char","text":"一年ぶりだよね","typing":0.0},
+{"t":1.6,"from":"char","type":"image","image":"F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0444.jpg","w":520,"h":700,"focusY":0.35},
+{"t":2.9,"from":"char","text":"その部屋着、\nまだ着ててくれたんだ","typing":0.6},
+{"t":4.3,"from":"char","text":"帰るわけないじゃん","typing":0.6},
+{"t":6.2,"from":"char","text":"","typing":1.4}],"tail":0.4,"duration":6.0}
