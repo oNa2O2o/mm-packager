@@ -1,6 +1,6 @@
 ---
 name: mm-packager
-version: 2.0.0
+version: 2.0.1
 description: 把一个视频 + 一份全量文案包装成 MM 投放成片（标题、字幕/气泡、选项定格、好感度、产品 UI 划卡/聊天承接、口播、片尾/JP 尾板、BGM/音效），不依赖编辑器：PIL 生成图层 → timeline.json → scripts/render.py 直接出校对预览/成片，验收后交付到素材目录的「成品」。支持多版本（同台词换角色）批量出片。用户说“包装这个视频”“MM 包装”“做 MM-KR/JP/EN/TC 包装”“AI包装”“重新设计包装”“迭代版本”“换角色同台词”“无BGM版”“加JP尾板”“接尾板”“划卡承接”“网感剪辑”“用 v5 编辑器包装/mm-workbench-v5”时使用（v5 已迁移到本 skill）。
 ---
 

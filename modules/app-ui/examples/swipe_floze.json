@@ -2,25 +2,25 @@
  "template": "swipe",
  "cards": [
   {
-   "image": "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/包装素材_产品UI模板测试/卡片素材/卡1_女仆.jpg",
+   "image": "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261016-女仆.jpg",
    "focusY": 0.35
   },
   {
-   "image": "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/包装素材_产品UI模板测试/卡片素材/卡2_二争一.jpg",
+   "image": "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261028-学妹辣妹二争一-1.jpg",
    "focusY": 0.35
   },
   {
-   "image": "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/包装素材_产品UI模板测试/卡片素材/卡3_雪女.jpg",
+   "image": "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261027-未亡人雪女.jpg",
    "focusY": 0.35
   }
  ],
  "hero": {
-  "image": "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0300.jpg",
+  "image": "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261026-floze迭代2.jpg",
   "focusY": 0.35,
   "name": "蓮",
   "gallery": [
-   "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0444.jpg",
-   "F:/钟海明/2026/2026年10月26日MM-JP-floze迭代2/工程素材/抽帧/0200.jpg"
+   "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261026-floze迭代2.jpg",
+   "Z:/创新事业部/AIGC项目视频组/mm-packager资源/library/cards/20261026-floze迭代2.jpg"
   ]
  }
 }

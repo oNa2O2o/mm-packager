@@ -19,25 +19,22 @@
 `$EC` = `python "$SK/modules/jp-endcard/endcard.py"`（需要 `playwright`、Chrome、ffmpeg；本机已配好）
 
 ```bash
-# 1. 接到工程末尾（默认配置秒出：直接用定稿成片）
+# 1. 默认配置（秒出：直接复制定稿成片）
 $EC render --out <工程>/包装素材_尾板/尾板.mp4
-# 工程原来有片尾（end/liquid 或 X-e* 自定义片尾）→ 从旧片尾起点开始替换（T 之后的片段删除，跨过 T 的截断）
-$EC render --out <工程>/包装素材_尾板/尾板.mp4
-# 指定起点（默认 = 时间线最后一个片段的结束）
-$EC render --out <工程>/包装素材_尾板/尾板.mp4
+# 在 timeline.json 里作为 video clip 接在末尾，start = 正片结束时间
 
 # 2. 换角色（可选）：先出静帧看，再 render（会逐帧渲染约 30 分钟，后台跑）
 $EC stills --config cfg.json --out "<工程>/包装素材_尾板/静帧"
 $EC render --out <工程>/包装素材_尾板/尾板.mp4 --config cfg.json
 
-# 3. 不进编辑器，只要一条尾板 mp4
+# 3. 只要一条尾板 mp4
 $EC render --out "<目录>/尾板.mp4" [--config cfg.json]
 ```
 
 放进 timeline：
 - 尾板 mp4 放在 `<工程>/包装素材_尾板/`（默认叫 `MM-JP_尾板_定稿.mp4`，自定义叫 `MM-JP_尾板_<配置哈希>.mp4`，同配置不会重复渲染），配置另存 `尾板配置.json`。
 - 渲染出的 mp4 作为 video clip 接在片尾（`fit: cover`），同 src 的 audio 条目放口播。
-- 正片 BGM（A2）跨过起点 → 截断并淡出 0.5 s；其他轨有片段跨过起点 → 报错退出，提示用 `--replace-from`。
+- 正片 BGM 在尾板起点前淡出 0.5 s（在 timeline 里给 BGM 条目设 duration + fadeOut）。
 - 然后照常 render.py 出预览、目视。
 
 ## 配置 cfg.json（全部可省略）

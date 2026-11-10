@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.0.1 (2026-11-10) 补漏
+- app-ui 示例配置改指向共享卡面库（原指向本机 floze 工程）。
+- jp-endcard README 去掉 attach/--replace-from/A2 等编辑器说法，改为 render + timeline 用法。
+- standards 里 V1/A1/模板气泡等编辑器术语改成通用说法。
+- xmp-upload 里指向 mm-workbench-v5 的地方改为 mm-packager。
+
 ## 2.0.0 (2026-11-09) 改名 mm-packager，去掉编辑器
 - 由 mm-workbench-v5 迁移而来（旧仓库 oNa2O2o/mm-workbench-v5 停止维护）。
 - 去掉编辑器依赖（mmw / REST / open_editor / qa_v5 / build_v5 / 模板路线）：新增 `scripts/render.py`（timeline.json → mp4/静帧，clip 模型与编辑器一致，毒舌 _3 实测与编辑器成品同响度、PSNR 均值 36）。
