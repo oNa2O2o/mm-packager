@@ -176,5 +176,12 @@
    "[あなた次第]"
   ],
   "cta": "今すぐ無料体験"
+ },
+ "mix": {
+  "duckLevel": 0.35,
+  "duckFade": 0.25,
+  "duckHold": 0.4,
+  "duckRelease": 0.7,
+  "duckMergeGap": 1.4
  }
 }

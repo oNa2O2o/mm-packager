@@ -1,10 +1,15 @@
-// 幂等写入工程：V1/A1 视频_3(放大) + 产品UI 划卡/聊天(V1+A1) + 片尾背景(V1)，X-* 图层，A2 BGM，A3 竹马口播，A4–A8 音效
+// 多版本 timeline 示例（来自五音梗·毒舌講座迭代，旧版案例；只当写法参考）
+// 目录和命名按 rules/工程交付.md：读 $P/包装素材_版本N/layers.json（gen.py 输出），写 $P/timeline_版本N.json：
+//   视频+原声（素材/视频_N_1080.mp4）、产品 UI mp4（包装素材_产品UI/产品UI-划卡_版本N.mp4 / 产品UI-聊天_版本N.mp4）、图层、BGM 分段闪避、口播、音效。
+//   格式见 scripts/render.py 文件头；不写 out，出片路径由 batch.sh 用 --out 给。
+// 用法：P=<工程目录> VER=版本2 node to_timeline.mjs（放在 $P/脚本/ 里运行）
+// 注意：BGM 闪避的 lvl() 固定 .11/.28、VOF 口播时长、SPEECH 区间都是该片的值；现行闪避做法见 rules/通用.md，按本片重写。
 import fs from 'node:fs';
-const FOLDER = '2026年11月5日MM-JP-五音梗-毒舌講座-迭代';
-const API = 'http://127.0.0.1:4400/api', F = encodeURIComponent(FOLDER);
-const P = `F:/钟海明/2026/${FOLDER}/`, ROOT = P + '包装素材v1/';
-const call = async (m, u, b) => { const r = await fetch(API + u, {method: m, headers: b ? {'content-type': 'application/json'} : {}, body: b ? JSON.stringify(b) : undefined}); const t = await r.text(); if (!r.ok) throw new Error(m + ' ' + u + ' ' + t); return JSON.parse(t); };
-const VER = process.env.VER ?? '_3';
+if (!process.env.P) throw new Error('先设置环境变量 P=<工程目录>');
+const VER = process.env.VER ?? '';
+if (!/^版本\d+$/.test(VER)) throw new Error('先设置环境变量 VER=版本N（如 版本1、版本2）');
+const N = VER.slice(2);
+const P = process.env.P.replace(/\\/g, '/').replace(/\/?$/, '/'), ROOT = P + `包装素材_${VER}/`;
 const meta = JSON.parse(fs.readFileSync(ROOT + 'layers.json', 'utf8'));
 import {execFileSync} from 'node:child_process';
 const p = {tracks: [{id: 'V1'}, {id: 'A1'}, {id: 'A2'}, {id: 'A3'}], clips: [], media: []};
@@ -25,7 +30,7 @@ p.tracks.splice(iA3 + 1, 0, ...[4, 5, 6, 7, 8].map(i => ({id: `A${i}`, kind: 'au
 for (const t of p.tracks) { t.hidden = false; t.muted = false; if (t.id === 'A3') t.name = 'A3 竹马口播'; if (t.id === 'A2') t.name = 'A2 BGM'; }
 
 // ---- V1 / A1：正片 + 产品UI ----
-const vid = await imp(P + `素材/视频${VER}_1080.mp4`);
+const vid = await imp(P + `素材/视频_${N}_1080.mp4`);
 const shk = {x: [[0, 0]], y: [[0, 0]], scale: [[0, 1]]};
 for (const t of meta.shake ?? []) {
   const X = [0, 16, -13, 10, -7, 4, -2, 0], Y = [0, -9, 8, -6, 4, -2, 1, 0];
@@ -42,9 +47,9 @@ const seg = (name, mid, start, d, extra = {}) => {
   shk.scale = shk.scale.filter(k => k[0] < a); shk.y = shk.y.filter(k => k[0] < a); shk.x = shk.x.filter(k => k[0] < a);
   shk.scale.push([a, 1]); shk.y.push([a, 0]); shk.x.push([a, 0]);
   ez.forEach((e, i) => { const t = a + (b - a) * (i + 1) / ez.length; const q = e * e; shk.scale.push([t, 1 + .75 * q]); shk.y.push([t, -330 * q]); }); }
-seg(`视频${VER}（放大1080）`, vid, 0, meta.end0, {keyframes: kfs(shk)});
-seg('产品UI-划卡', await imp(P + `包装素材_产品UI/产品UI-划卡_v2${VER}.mp4`), meta.sw0, meta.swd);
-seg('产品UI-聊天', await imp(P + `包装素材_产品UI/产品UI-聊天_v2${VER}.mp4`), meta.ch0, meta.chd);
+seg(`视频_${N}（放大1080）`, vid, 0, meta.end0, {keyframes: kfs(shk)});
+seg('产品UI-划卡', await imp(P + `包装素材_产品UI/产品UI-划卡_${VER}.mp4`), meta.sw0, meta.swd);
+seg('产品UI-聊天', await imp(P + `包装素材_产品UI/产品UI-聊天_${VER}.mp4`), meta.ch0, meta.chd);
 
 // ---- 图层 ----
 for (const L of meta.layers) {
@@ -85,8 +90,8 @@ p.clips = p.clips.filter(c => { const ok = c.duration >= 1 / 30 - 1e-3; if (!ok)
 { const used = new Set(p.clips.map(c => c.mediaId)); p.media = p.media.filter(m => used.has(m.id)); }
 const order = p.tracks.map(t => t.id);
 const vis = p.clips.filter(c => c.type !== 'audio').sort((a, b) => order.indexOf(a.trackId) - order.indexOf(b.trackId));
-const tl = {size: [1080, 1920], fps: 30, duration: END, out: P + `导出/MM-JP-五音梗-毒舌講座-迭代_视频${VER}_render.mp4`,
+const tl = {size: [1080, 1920], fps: 30, duration: END,
   clips: vis.map(c => ({type: c.type, src: c.mediaId, start: c.start, duration: c.duration, in: c.in ?? 0, fit: c.fit, transform: c.transform, keyframes: c.keyframes})),
   audio: p.clips.filter(c => c.type === 'audio').map(c => ({src: c.mediaId, start: c.start, duration: c.duration, in: c.in ?? 0, volume: c.volume ?? 1, fadeIn: c.fadeIn ?? 0, fadeOut: c.fadeOut ?? 0}))};
-fs.writeFileSync(P + `timeline${VER}.json`, JSON.stringify(tl, null, 1));
+fs.writeFileSync(P + `timeline_${VER}.json`, JSON.stringify(tl, null, 1));
 console.log('timeline', vis.length, tl.audio.length, END);
